@@ -94,50 +94,50 @@ int gameWon(char b[3][3])
 {
 	for (int i=0; i<3; i++)
 	{
-		if(b[i][0] == b[i][1] && b[i][1] == b[i][2])
+		if(b[i][0] == b[i][1] && b[i][1] == b[i][2] && b[i][0] != '-')
 		{
 			if (b[i][0] == 'X')
 			{
 				return -10;
 			}
-			else if (b[i][0] == 'O')
+			else 
 			{
 				return 10;
 			}
 		}
 
-		else if(b[0][i] == b[1][i]  && b[1][i] == b[2][i])
+		else if(b[0][i] == b[1][i]  && b[1][i] == b[2][i] && b[0][i] != '-')
 		{
 			if (b[i][0] == 'X')
 			{
 				return -10;
 			}
-			else if (b[i][0] == 'O')
+			else
 			{
 				return 10;
 			}
 		}
 
 	}
-	if (b[0][0] == b[1][1] && b[1][1] == b[2][2])
+	if (b[0][0] == b[1][1] && b[1][1] == b[2][2] && b[0][0] != '-')
 	{
 		if (b[0][0] == 'X')
 		{
 			return -10;
 		}
-		else if (b[0][0] == 'O') 
+		else 
 		{
 			return 10;
 		}
 	}
 
-	if (b[2][0] == b[1][1] && b[1][1] == b[0][2])
+	if (b[2][0] == b[1][1] && b[1][1] == b[0][2] && b[2][0] != '-')
 	{
 		if(b[2][0] == 'X')
 		{
 			return -10;
 		}
-		else if(b[2][0] == 'O')
+		else 
 		{
 			return 10;
 		}
@@ -146,7 +146,7 @@ int gameWon(char b[3][3])
 }
 
 //Minimax algorithm
-int minimax(char temp[3][3], int depth,bool is_max)
+int minimax(char temp[3][3],bool is_max)
 {
 	int score = gameWon(temp);
 	if (score!= 0)
@@ -164,7 +164,7 @@ int minimax(char temp[3][3], int depth,bool is_max)
 				if (temp[i][i2] == '-')
 				{
 					temp[i][i2] = 'O';
-					best = max(best, minimax(temp,depth+1,!is_max));
+					best = max(best, minimax(temp,!is_max));
 					temp[i][i2] = '-';
 				}
 			}
@@ -180,7 +180,7 @@ int minimax(char temp[3][3], int depth,bool is_max)
 				if (temp[i][i2] == '-')
 				{
 					temp[i][i2] = 'X';
-					best = max(best, minimax(temp,depth+1,!is_max));
+					best = min(best, minimax(temp,!is_max));
 					temp[i][i2] = '-';
 				}
 			}
@@ -201,7 +201,7 @@ move bestMove(char board[3][3])
             if (board[i][i2]=='-')
             {
                 board[i][i2] = 'O';
-                int score = minimax(board, 0, true);
+                int score = minimax(board,true);
                 board[i][i2] = '-';
                 if (score > best)
                 {
@@ -273,6 +273,7 @@ int main(){
 		}
 		
 	}
+	showBoard(board);
 	if (won == 0)
 	{
 		printf("The game resulted in a tie\n");
